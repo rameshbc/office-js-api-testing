@@ -36,7 +36,7 @@ function loadData() {
       var columnHeadersRowIndex = startRowIndex + 1;
       var tableStartRowIndex = columnHeadersRowIndex + 1;
       
-      var data = getTableData(result.details, columnHeadersRowIndex, tableStartRowIndex, startColumnIndex_1);
+      var data = getTableData(result.details, columnHeadersRowIndex, tableStartRowIndex, startColumnIndex);
       
       var endColumnIndex = data.headerValues.length;
       var startColumnName = indexToName(startColumnIndex);
