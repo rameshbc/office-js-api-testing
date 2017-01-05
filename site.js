@@ -41,6 +41,7 @@ function loadData() {
       var endColumnIndex = data.headerValues.length;
       var startColumnName = indexToName(startColumnIndex);
       var endColumnName = indexToName(endColumnIndex);
+      var endRowIndex = tableStartRowIndex + data.values.length;
       
       // Create table
       var tableRange = "'" + sheetName + "'!" + startColumnName + tableStartRowIndex + ":" + endColumnName + endRowIndex;
@@ -55,6 +56,17 @@ function loadData() {
       
       // Format the table
       dataTable.style = 'TableStyleMedium23';
+
+      return ctx.sync().then(function() {
+        spinnerComponent.stop();
+        $('.ms-Spinner').hide();
+      }).catch(function (error) {
+        spinnerComponent.stop();
+        $('.ms-Spinner').hide();
+        if (error instanceof OfficeExtension.Error) {
+            console.log('Debug info: ' + JSON.stringify(error.debugInfo));
+        }
+      });;
     });
   });
 }
