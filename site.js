@@ -15,6 +15,8 @@
     $('.ms-Spinner').hide();
   
     $('#load-data').click(loadData);    
+    $('#load-first-data').click(loadData);
+    $('#load-last-data').click(loadData);
   });
 };
 
@@ -22,7 +24,10 @@ function loadData() {
   $('.ms-Spinner').show();
   spinnerComponent.start();
   
-  var sheetName = 'Categories';
+  var size = $(this).data('load');
+  console.log(size);
+
+  var sheetName = 'Categories_' + size;
   var tableName = sheetName;
   
   $.getJSON('https://gist.githubusercontent.com/renil/fef6142dfe8e707061a399cca7fa1d32/raw/a17597dfe1b8a1c81e92e0d89a853d1aa00b31d2/data.json', function (result) {    
@@ -36,7 +41,7 @@ function loadData() {
       var columnHeadersRowIndex = startRowIndex + 1;
       var tableStartRowIndex = columnHeadersRowIndex + 1;
       
-      var data = getTableData(result.details, columnHeadersRowIndex, tableStartRowIndex, startColumnIndex);
+      var data = getTableData(result.details, columnHeadersRowIndex, tableStartRowIndex, startColumnIndex, size);
       
       var endColumnIndex = data.headerValues.length;
       var startColumnName = indexToName(startColumnIndex);
@@ -71,7 +76,7 @@ function loadData() {
   });
 }
   
-function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnIndex) {    
+function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnIndex, size) {    
   var isFirstRow = true;
   var categoryHeaders = ['', ''];
   var columnHeaders = ['Jurisdiction Id', 'Jurisdiction'];
@@ -82,11 +87,11 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
   var totalBeginningColumnName = '';
   var totalEndingColumnName = '';
   var values = [];
-  var currentRow = startRowIndex + 1; // Add 1 for the header row
+  var currentRow = startRowIndex + 1; // Add 1 for the header row  
   _.each(data, function (jurisdiction) {
     var temp = [];
     temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
-    _.each(jurisdiction.apportionments, function (apportionment) {
+    _.each(jurisdiction.apportionments, function (apportionment) {      
       if (isFirstRow) {
         categoryHeaders.push(apportionment.category, '', '', '');
         columnHeaders.push('Beginning', 'Ending Raw', 'Allocation', 'Ending');
