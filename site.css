@@ -1,0 +1,8 @@
+body {
+  background: #fff;
+}
+
+.ms-Spinner {
+  bottom: 10px;
+  position: fixed;
+}
