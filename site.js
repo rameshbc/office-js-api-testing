@@ -14,7 +14,7 @@
     // Hide the spinner initially
     $('.ms-Spinner').hide();
   
-    $('#load-data').click(loadData);  
+    $('#load-data').click(loadData);    
   });
 };
 
@@ -64,7 +64,7 @@ function loadData() {
         spinnerComponent.stop();
         $('.ms-Spinner').hide();
         if (error instanceof OfficeExtension.Error) {
-            console.log('Debug info: ' + JSON.stringify(error.debugInfo));
+            console.log(JSON.stringify(error));
         }
       });;
     });
