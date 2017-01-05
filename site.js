@@ -91,7 +91,7 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
   var index = 0;
   _.each(data, function (jurisdiction) {
 
-    if(size == "all" || (size == "first" && index < 40) || (size == "last" && index > 40))
+    if(size == "all" || (size == "first" && index < 40) || (size == "last" && index > 38))
     {
       var temp = [];
       temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
