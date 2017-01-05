@@ -90,45 +90,43 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
   var currentRow = startRowIndex + 1; // Add 1 for the header row  
   var index = 0;
   _.each(data, function (jurisdiction) {
-    if(size == "first" && index > 50)
-      break;
-    
-    if(size == "last" && index < 57)
-      continue;
 
-    var temp = [];
-    temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
-    _.each(jurisdiction.apportionments, function (apportionment) {      
+    if(size == "all" || (size == "first" && index < 50) || (size == "last" && index > 40))
+    {
+      var temp = [];
+      temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
+      _.each(jurisdiction.apportionments, function (apportionment) {      
+        if (isFirstRow) {
+          categoryHeaders.push(apportionment.category, '', '', '');
+          columnHeaders.push('Beginning', 'Ending Raw', 'Allocation', 'Ending');
+          headerValues.push(apportionment.category + ' Beginning', apportionment.category + ' Ending Raw', apportionment.category + ' Allocation', apportionment.category + ' Ending');
+          totalRow.push("=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Beginning])", "=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending Raw])", '', "=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending])");
+        }
+        temp.push(apportionment.beginningAmount ? apportionment.beginningAmount : '', apportionment.endingRawAmount ? apportionment.endingRawAmount : '', apportionment.allocationAmount ? apportionment.allocationAmount : '');
+        
+        // Ending Balance is calculated by summing Ending Raw amount and Allocation Amount
+        temp.push("=" + indexToName(temp.length - 1) + currentRow + "+" + indexToName(temp.length) + currentRow);
+      });
       if (isFirstRow) {
-        categoryHeaders.push(apportionment.category, '', '', '');
-        columnHeaders.push('Beginning', 'Ending Raw', 'Allocation', 'Ending');
-        headerValues.push(apportionment.category + ' Beginning', apportionment.category + ' Ending Raw', apportionment.category + ' Allocation', apportionment.category + ' Ending');
-        totalRow.push("=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Beginning])", "=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending Raw])", '', "=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending])");
+        categoryHeaders.push('', '');
+        columnHeaders.push('Beginning', 'Ending');
+        endColumnName = indexToName(headerValues.length);
+        headerValues.push('Total Beginning', 'Total Ending');
+        totalRow.push('=SUBTOTAL(109,[Total Beginning])', '=SUBTOTAL(109,[Total Ending])');
+        totalBeginningColumnName = indexToName(headerValues.length - 1);
+        totalEndingColumnName = endColumnName;
       }
-      temp.push(apportionment.beginningAmount ? apportionment.beginningAmount : '', apportionment.endingRawAmount ? apportionment.endingRawAmount : '', apportionment.allocationAmount ? apportionment.allocationAmount : '');
       
-      // Ending Balance is calculated by summing Ending Raw amount and Allocation Amount
-      temp.push("=" + indexToName(temp.length - 1) + currentRow + "+" + indexToName(temp.length) + currentRow);
-    });
-    if (isFirstRow) {
-      categoryHeaders.push('', '');
-      columnHeaders.push('Beginning', 'Ending');
-      endColumnName = indexToName(headerValues.length);
-      headerValues.push('Total Beginning', 'Total Ending');
-      totalRow.push('=SUBTOTAL(109,[Total Beginning])', '=SUBTOTAL(109,[Total Ending])');
-      totalBeginningColumnName = indexToName(headerValues.length - 1);
-      totalEndingColumnName = endColumnName;
+      // Add the Beginning Ending column values
+      var beginningTotal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
+      beginningTotal = beginningTotal + (totalBeginningColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
+      var endingToal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
+      endingToal = endingToal + (totalEndingColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
+      temp.push(beginningTotal, endingToal);
+      values.push(temp);
+      isFirstRow = false;
+      currentRow++;      
     }
-    
-    // Add the Beginning Ending column values
-    var beginningTotal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
-    beginningTotal = beginningTotal + (totalBeginningColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
-    var endingToal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
-    endingToal = endingToal + (totalEndingColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
-    temp.push(beginningTotal, endingToal);
-    values.push(temp);
-    isFirstRow = false;
-    currentRow++;
     index++;
   });
   return {
