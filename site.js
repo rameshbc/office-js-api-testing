@@ -88,7 +88,14 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
   var totalEndingColumnName = '';
   var values = [];
   var currentRow = startRowIndex + 1; // Add 1 for the header row  
+  var index = 0;
   _.each(data, function (jurisdiction) {
+    if(size == "first" && index > 50)
+      break;
+    
+    if(size == "last" && index < 57)
+      continue;
+
     var temp = [];
     temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
     _.each(jurisdiction.apportionments, function (apportionment) {      
@@ -122,6 +129,7 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
     values.push(temp);
     isFirstRow = false;
     currentRow++;
+    index++;
   });
   return {
     categoryHeaders: categoryHeaders,
