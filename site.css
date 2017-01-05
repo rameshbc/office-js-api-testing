@@ -6,3 +6,8 @@ body {
   bottom: 10px;
   position: fixed;
 }
+
+.btn {
+  margin: 5px;
+  padding: 5px;
+}
