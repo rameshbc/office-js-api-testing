@@ -79,7 +79,7 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
         categoryHeaders.push(apportionment.category, '', '', '');
         columnHeaders.push('Beginning', 'Ending Raw', 'Allocation', 'Ending');
         headerValues.push(apportionment.category + ' Beginning', apportionment.category + ' Ending Raw', apportionment.category + ' Allocation', apportionment.category + ' Ending');
-        totalRow.push("=SUBTOTAL(109,[" + _this.utilities.sanitizeExcelColumnNameForFormula(apportionment.category) + " Beginning])", "=SUBTOTAL(109,[" + _this.utilities.sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending Raw])", '', "=SUBTOTAL(109,[" + _this.utilities.sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending])");
+        totalRow.push("=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Beginning])", "=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending Raw])", '', "=SUBTOTAL(109,[" + sanitizeExcelColumnNameForFormula(apportionment.category) + " Ending])");
       }
       temp.push(apportionment.beginningAmount ? apportionment.beginningAmount : '', apportionment.endingRawAmount ? apportionment.endingRawAmount : '', apportionment.allocationAmount ? apportionment.allocationAmount : '');
       
@@ -124,5 +124,11 @@ function indexToName(index){
     num = parseInt(((num - modulo) / 26).toString(), 10);
   }
   return name;
+}
+
+function sanitizeExcelColumnNameForFormula(name) {
+    var result = name
+        .replace(/[']/g, '\'\'');
+    return result;
 }
 })();
