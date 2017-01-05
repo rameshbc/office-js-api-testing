@@ -35,7 +35,7 @@ function loadData() {
       var sheet = ctx.workbook.worksheets.add(sheetName);
       sheet.getRange().format.fill.color = 'white';
       
-      var startRowIndex = 3;
+      var startRowIndex = 0;
       var startColumnIndex = 1
       
       var columnHeadersRowIndex = startRowIndex + 1;
@@ -91,7 +91,7 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
   var index = 0;
   _.each(data, function (jurisdiction) {
 
-    if(size == "all" || (size == "first" && index < 50) || (size == "last" && index > 40))
+    if(size == "all" || (size == "first" && index < 40) || (size == "last" && index > 40))
     {
       var temp = [];
       temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
