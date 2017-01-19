@@ -58,18 +58,37 @@ function loadData() {
       // Set the table data
       dataTable.getHeaderRowRange().values = [data.headerValues];
 
+      var chunkSize = 1500;
+      var t = performance.now();
+
       if(size !== 'all_chunks') {
         dataTable.getDataBodyRange().formulas = data.values;
       }
       else {
-        setValuesBatched(dataTable.getDataBodyRange(), data.values, 1500);
+        setValuesBatched(dataTable.getDataBodyRange(), data.values, chunkSize);
       }
       dataTable.getTotalRowRange().formulas = [data.totalRow];
 
       // Format the table
       dataTable.style = 'TableStyleMedium23';
 
+      // Hide the first column
+      sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
+
       return ctx.sync().then(function() {
+        if(size !== 'all_chunks') {
+          console.log("Took " + (performance.now() - t) + " milliseconds");
+        }
+        else {
+          console.log("Took " + (performance.now() - t) + " milliseconds at chunk size " + chunkSize);
+        }
+
+        Office.context.document.bindings.addFromNamedItemAsync(tableName, 'table', { id: tableName }, function (result) {
+          if (result.status === Office.AsyncResultStatus.Failed) {
+            console.error('Unable to create the data binding. Please refresh the add-in and try again.');
+          }
+        });
+
         spinnerComponent.stop();
         $('.ms-Spinner').hide();
       }).catch(function (error) {
@@ -85,16 +104,16 @@ function loadData() {
 
 function setValuesBatched(range, values, maxCellCount) {
     if (Array.isArray(values) && values.length > 0) {
-          var maxRowCount = Math.floor(maxCellCount / values[0].length);
-          for (var startRowIndex = 0; startRowIndex < values.length; startRowIndex += maxRowCount) {
-                  var rowCount = maxRowCount;
-                  if (startRowIndex + rowCount > values.length) {
-                        rowCount = values.length - startRowIndex;
-                  }
-                  var chunk = range.getRow(startRowIndex).getBoundingRect(range.getRow(startRowIndex + rowCount - 1));
-                  var valueSlice = values.slice(startRowIndex, startRowIndex + rowCount);
-                  chunk.values = valueSlice;
-          }
+        var maxRowCount = Math.floor(maxCellCount / values[0].length);
+        for (var startRowIndex = 0; startRowIndex < values.length; startRowIndex += maxRowCount) {
+                var rowCount = maxRowCount;
+                if (startRowIndex + rowCount > values.length) {
+                      rowCount = values.length - startRowIndex;
+                }
+                var chunk = range.getRow(startRowIndex).getBoundingRect(range.getRow(startRowIndex + rowCount - 1));
+                var valueSlice = values.slice(startRowIndex, startRowIndex + rowCount);
+                chunk.values = valueSlice;
+        }
     }
     else {
           range.values = values;
