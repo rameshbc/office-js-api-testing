@@ -57,7 +57,7 @@ function loadData() {
 
       // Set the table data
       var chunkSize = 1500;
-      var t = performance.now();
+      // var t = performance.now();
 
       if(size !== 'all_chunks') {
         dataTable.getHeaderRowRange().values = [data.headerValues];
@@ -65,9 +65,9 @@ function loadData() {
         dataTable.getTotalRowRange().formulas = [data.totalRow];
       }
       else {
-        // setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
+        setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
         setValuesBatched(dataTable.getDataBodyRange(), data.values, chunkSize);
-        // setValuesBatched(dataTable.getDataBodyRange(), [data.totalRow], chunkSize);
+        setValuesBatched(dataTable.getDataBodyRange(), [data.totalRow], chunkSize);
       }
 
       // Format the table
@@ -85,11 +85,11 @@ function loadData() {
           console.log("Took " + (performance.now() - t) + " milliseconds at chunk size " + chunkSize);
         }
 
-        Office.context.document.bindings.addFromNamedItemAsync(tableName, 'table', { id: tableName }, function (result) {
-          if (result.status === Office.AsyncResultStatus.Failed) {
-            console.error('Unable to create the data binding. Please refresh the add-in and try again.');
-          }
-        });
+        // Office.context.document.bindings.addFromNamedItemAsync(tableName, 'table', { id: tableName }, function (result) {
+        //   if (result.status === Office.AsyncResultStatus.Failed) {
+        //     console.error('Unable to create the data binding. Please refresh the add-in and try again.');
+        //   }
+        // });
 
         spinnerComponent.stop();
         $('.ms-Spinner').hide();
