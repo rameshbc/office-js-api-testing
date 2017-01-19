@@ -67,13 +67,13 @@ function loadData() {
       else {
         setValuesBatched(dataTable.getDataBodyRange(), data.values, chunkSize);
       }
-      dataTable.getTotalRowRange().formulas = [data.totalRow];
+      //dataTable.getTotalRowRange().formulas = [data.totalRow];
 
       // Format the table
       dataTable.style = 'TableStyleMedium23';
 
       // Hide the first column
-      sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
+      //sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
 
       return ctx.sync().then(function() {
         if(size !== 'all_chunks') {
