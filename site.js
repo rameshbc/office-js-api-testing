@@ -17,7 +17,7 @@
     $('#load-data').click(loadData);
     $('#load-first-data').click(loadData);
     $('#load-last-data').click(loadData);
-    $('load-data-chunks').click(loadData);
+    $('#load-data-chunks').click(loadData);
   });
 };
 
