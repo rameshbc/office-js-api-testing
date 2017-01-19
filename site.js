@@ -56,24 +56,26 @@ function loadData() {
       dataTable.showTotals = true;
 
       // Set the table data
-      dataTable.getHeaderRowRange().values = [data.headerValues];
-
       var chunkSize = 1500;
       var t = performance.now();
 
       if(size !== 'all_chunks') {
+        dataTable.getHeaderRowRange().values = [data.headerValues];
         dataTable.getDataBodyRange().formulas = data.values;
+        dataTable.getTotalRowRange().formulas = [data.totalRow];
       }
       else {
+        setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
         setValuesBatched(dataTable.getDataBodyRange(), data.values, chunkSize);
+        setValuesBatched(dataTable.getDataBodyRange(), [data.totalRow], chunkSize);
       }
-      //dataTable.getTotalRowRange().formulas = [data.totalRow];
 
       // Format the table
       dataTable.style = 'TableStyleMedium23';
 
-      // Hide the first column
-      //sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
+      //Hide the first column
+      sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
+      sheet.activate();
 
       return ctx.sync().then(function() {
         if(size !== 'all_chunks') {
