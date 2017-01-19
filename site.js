@@ -65,9 +65,9 @@ function loadData() {
         dataTable.getTotalRowRange().formulas = [data.totalRow];
       }
       else {
-        setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
+        // setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
         setValuesBatched(dataTable.getDataBodyRange(), data.values, chunkSize);
-        setValuesBatched(dataTable.getDataBodyRange(), [data.totalRow], chunkSize);
+        // setValuesBatched(dataTable.getDataBodyRange(), [data.totalRow], chunkSize);
       }
 
       // Format the table
