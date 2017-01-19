@@ -56,7 +56,7 @@ function loadData() {
       dataTable.showTotals = true;
 
       // Set the table data
-      var chunkSize = 1500;
+      var chunkSize = 500;
       // var t = performance.now();
 
       if(size !== 'all_chunks') {
