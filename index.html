@@ -13,30 +13,37 @@
 <body>
   <div>Using Table.Formulas property</div>
   <div class="btn">
-    <button class="query-button category-button ms-Button" data-load="all" id="load-data">
+    <button class="query-button category-button ms-Button load-data" data-load="all" id="load-data">
       <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
       <span class="ms-Button-label">Load Data (Total 68 rows)</span>
       <span class="ms-Button-description">Load Data.</span>
     </button>
   </div>
   <div class="btn">
-    <button class="query-button category-button ms-Button" data-load="first" id="load-first-data">
+    <button class="query-button category-button ms-Button load-data" data-load="first" id="load-first-data">
       <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
       <span class="ms-Button-label">Load Data (First 40 rows)</span>
       <span class="ms-Button-description">Load Data.</span>
     </button>
   </div>
   <div class="btn">
-    <button class="query-button category-button ms-Button" data-load="last" id="load-last-data">
+    <button class="query-button category-button ms-Button load-data" data-load="last" id="load-last-data">
       <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
       <span class="ms-Button-label">Load Data (Last 30 rows)</span>
+      <span class="ms-Button-description">Load Data.</span>
+    </button>
+  </div>
+  <div class="btn">
+    <button class="query-button category-button ms-Button load-data" data-load="allExceptTotal" id="load-data-no-formulas">
+      <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+      <span class="ms-Button-label">Load Data (Total 68 rows, Not total rows/columns)</span>
       <span class="ms-Button-description">Load Data.</span>
     </button>
   </div>
   <hr />
   <div>Using Range</div>
   <div class="btn">
-    <button class="query-button category-button ms-Button" data-load="all_chunks" id="load-data-chunks">
+    <button class="query-button category-button ms-Button load-data" data-load="all_chunks" id="load-data-chunks">
       <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
       <span class="ms-Button-label">Load Data (Total 68 rows in chunks)</span>
       <span class="ms-Button-description">Load Data.</span>

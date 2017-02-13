@@ -14,10 +14,7 @@
     // Hide the spinner initially
     $('.ms-Spinner').hide();
 
-    $('#load-data').click(loadData);
-    $('#load-first-data').click(loadData);
-    $('#load-last-data').click(loadData);
-    $('#load-data-chunks').click(loadData);
+    $('.load-data').click(loadData);    
   });
 };
 
@@ -62,7 +59,12 @@ function loadData() {
       if(size !== 'all_chunks') {
         dataTable.getHeaderRowRange().values = [data.headerValues];
         dataTable.getDataBodyRange().formulas = data.values;
-        dataTable.getTotalRowRange().formulas = [data.totalRow];
+
+        // Do not write total
+        if(size !== 'allExceptTotal')
+        {
+          dataTable.getTotalRowRange().formulas = [data.totalRow];
+        }
       }
       else {
         setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
@@ -165,12 +167,15 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
       }
 
       // Add the Beginning Ending column values
-      var beginningTotal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
-      beginningTotal = beginningTotal + (totalBeginningColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
-      var endingToal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
-      endingToal = endingToal + (totalEndingColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
-      temp.push(beginningTotal, endingToal);
-      values.push(temp);
+      if(size !== 'allExceptTotal')
+      {
+        var beginningTotal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
+        beginningTotal = beginningTotal + (totalBeginningColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
+        var endingToal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
+        endingToal = endingToal + (totalEndingColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
+        temp.push(beginningTotal, endingToal);
+        values.push(temp);
+      }
       isFirstRow = false;
       currentRow++;
     }
