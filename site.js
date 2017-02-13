@@ -50,7 +50,7 @@ function loadData() {
       var tableRange = "'" + sheetName + "'!" + startColumnName + tableStartRowIndex + ":" + endColumnName + endRowIndex;
       var dataTable = ctx.workbook.tables.add(tableRange, true);
       dataTable.name = tableName;
-      dataTable.showTotals = true;
+      dataTable.showTotals = (size !== 'allExceptTotal');
 
       // Set the table data
       var chunkSize = 200;
@@ -62,8 +62,7 @@ function loadData() {
 
         // Do not write total
         if(size !== 'allExceptTotal')
-        {
-          dataTable.showTotals = false;
+        {          
           dataTable.getTotalRowRange().formulas = [data.totalRow];
         }
       }
