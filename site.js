@@ -156,7 +156,7 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
         // Ending Balance is calculated by summing Ending Raw amount and Allocation Amount
         temp.push("=" + indexToName(temp.length - 1) + currentRow + "+" + indexToName(temp.length) + currentRow);
       });
-      if (isFirstRow) {
+      if (isFirstRow && size !== 'allExceptTotal') {
         categoryHeaders.push('', '');
         columnHeaders.push('Beginning', 'Ending');
         endColumnName = indexToName(headerValues.length);
