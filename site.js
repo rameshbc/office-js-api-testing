@@ -175,9 +175,9 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
         beginningTotal = beginningTotal + (totalBeginningColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
         var endingToal = ("=SUMIF($" + startColumnName + "$" + columnHeaderRowIndex + ":$" + endColumnName + "$" + columnHeaderRowIndex + ",");
         endingToal = endingToal + (totalEndingColumnName + "$" + columnHeaderRowIndex + ", " + startColumnName + currentRow + ":" + endColumnName + currentRow + ")");
-        temp.push(beginningTotal, endingToal);
-        values.push(temp);
+        temp.push(beginningTotal, endingToal);        
       }
+      values.push(temp);
       isFirstRow = false;
       currentRow++;
     }
