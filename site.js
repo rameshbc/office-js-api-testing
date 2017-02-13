@@ -50,7 +50,7 @@ function loadData() {
       var tableRange = "'" + sheetName + "'!" + startColumnName + tableStartRowIndex + ":" + endColumnName + endRowIndex;
       var dataTable = ctx.workbook.tables.add(tableRange, true);
       dataTable.name = tableName;
-      dataTable.showTotals = (size !== 'allExceptTotal');
+      dataTable.showTotals = true;//(size !== 'allExceptTotal');
 
       // Set the table data
       var chunkSize = 200;
