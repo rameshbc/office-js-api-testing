@@ -63,6 +63,7 @@ function loadData() {
         // Do not write total
         if(size !== 'allExceptTotal')
         {
+          dataTable.showTotals = false;
           dataTable.getTotalRowRange().formulas = [data.totalRow];
         }
       }
@@ -140,7 +141,8 @@ function getTableData(data, columnHeaderRowIndex, startRowIndex, startColumnInde
   var index = 0;
   _.each(data, function (jurisdiction) {
 
-    if(size === "all" || size === "all_chunks" || (size === "first" && index < 40) || (size === "last" && index > 38))
+    if(size === "all" || size === "all_chunks" || size === "allExceptTotal" 
+    	|| (size === "first" && index < 40) || (size === "last" && index > 38))
     {
       var temp = [];
       temp.push(jurisdiction.jurisdictionId, jurisdiction.jurisdiction);
