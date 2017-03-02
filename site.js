@@ -59,22 +59,26 @@ function loadData() {
       if(size !== 'all_chunks') {
         dataTable.getHeaderRowRange().values = [data.headerValues];
         dataTable.getDataBodyRange().formulas = data.values;
-
+		
+		dataTable.showTotals = true;
+      	dataTable.getTotalRowRange().formulas = [data.totalRow];
         // Do not write total
         //if(size !== 'allExceptTotal')
         //{          
-          dataTable.getTotalRowRange().formulas = [data.totalRow];
+          
         //}
       }
       else {
         setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
         setValuesBatched(dataTable.getDataBodyRange(), data.values, chunkSize);
+
+        dataTable.showTotals = true;
         setValuesBatched(dataTable.getDataBodyRange(), [data.totalRow], chunkSize);
       }
 
       // Format the table
       dataTable.style = 'TableStyleMedium23';
-      dataTable.showTotals = true;
+
 
       //Hide the first column
       sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
