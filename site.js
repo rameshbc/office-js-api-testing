@@ -50,7 +50,7 @@ function loadData() {
       var tableRange = "'" + sheetName + "'!" + startColumnName + tableStartRowIndex + ":" + endColumnName + endRowIndex;
       var dataTable = ctx.workbook.tables.add(tableRange, true);
       dataTable.name = tableName;
-      dataTable.showTotals = true;//(size !== 'allExceptTotal');
+      dataTable.showTotals = false;
 
       // Set the table data
       var chunkSize = 200;
@@ -61,10 +61,10 @@ function loadData() {
         dataTable.getDataBodyRange().formulas = data.values;
 
         // Do not write total
-        if(size !== 'allExceptTotal')
-        {          
+        //if(size !== 'allExceptTotal')
+        //{          
           dataTable.getTotalRowRange().formulas = [data.totalRow];
-        }
+        //}
       }
       else {
         setValuesBatched(dataTable.getHeaderRowRange(), [data.headerValues], chunkSize);
@@ -74,12 +74,14 @@ function loadData() {
 
       // Format the table
       dataTable.style = 'TableStyleMedium23';
+      dataTable.showTotals = true;
 
       //Hide the first column
       sheet.getRange(startColumnName + ':' + startColumnName).columnHidden = true;
       sheet.activate();
 
       return ctx.sync().then(function() {
+
         if(size !== 'all_chunks') {
           console.log("Took " + (performance.now() - t) + " milliseconds");
         }
