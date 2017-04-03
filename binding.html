@@ -1,0 +1,73 @@
+<html>
+<head>
+<script src="//appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+
+<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"></script>
+<script>
+(function() {
+    'use strict';
+
+     var binding;
+	 
+    // The initialize function must be run each time a new page is loaded
+    Office.initialize = function(reason) {
+        $(document).ready(function() {
+            //addDocumentHandler();
+			bindNamedItem('AccountAnalysis');
+			bindNamedItem('TaxOnlyAccounts');
+			bindNamedItem('AdjustingJournalEntries');
+			bindNamedItem('PLAlloc');
+			bindNamedItem('InfoReq');
+			bindNamedItem('Perms');
+			bindNamedItem('Temps');
+        });
+    };
+	
+	function bindNamedItem(name) {
+		console.log('Table :'+ name);
+
+		Office.context.document.bindings.addFromNamedItemAsync(name, "table", {id:name}, function (result) {
+			if (result.status == 'succeeded'){
+				console.log('Binding call success : '+ name);
+				console.log('Added new binding with type: ' + result.value.type + ' and id: ' + result.value.id);
+				
+				binding = result.value;
+				result.value.addHandlerAsync(Office.EventType.BindingSelectionChanged, onBindingSelectionChanged());
+				}
+			else
+				console.error('Error: ' + result.error.message);
+		});
+	}
+	
+	function onBindingSelectionChanged() {
+		var _this = this;
+		var that = this;
+		return function (eventArgs) {
+			try {
+				if (eventArgs.startRow == null) {
+					return;
+				}
+				console.log('Current Row ' + eventArgs.startRow);
+				var selection = {
+					startRow: eventArgs.startRow,
+					startColumn: eventArgs.startColumn,
+					rowCount: eventArgs.rowCount,
+					columnCount: eventArgs.columnCount,
+					customMapping: null,
+				};
+			   
+			}
+			catch (ex) {
+				 console.error(ex);
+			}
+		};
+    }
+		
+
+})();
+
+	</script>
+</body>
+</html>
