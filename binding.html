@@ -37,7 +37,7 @@
 				result.value.addHandlerAsync(Office.EventType.BindingSelectionChanged, onBindingSelectionChanged());
 				}
 			else
-				console.error('Error: ' + result.error.message);
+				console.error('Error: ' + JSON.stringify(result));
 		});
 	}
 	
